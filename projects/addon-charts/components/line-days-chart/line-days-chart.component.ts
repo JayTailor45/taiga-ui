@@ -164,8 +164,8 @@ export class TuiLineDaysChart implements AfterViewInit {
     protected getHintContext(
         x: number,
         value: ReadonlyArray<[TuiDay, number]>,
-    ): [TuiDay, number] {
-        return value[x - (value[0]?.[0]?.day || 0) + 1];
+    ): [TuiDay, number] | null {
+        return value[x - (value[0]?.[0]?.day || 0) + 1] ?? null;
     }
 
     protected readonly daysStringify: TuiStringHandler<number> = (index) => {
@@ -200,15 +200,6 @@ export class TuiLineDaysChart implements AfterViewInit {
 
     protected getWidth(index: number): number {
         return (this.getDay(index)?.daysCount || 0) * this.months.length;
-    }
-
-    protected getContext(index: number, {value}: TuiLineChart): unknown {
-        const x = value[index]?.[0] || 0;
-        const day = this.getDay(x);
-
-        return this.hintDirective && day
-            ? this.hintDirective.getContext(day)
-            : this.getHintContext(x, this.value);
     }
 
     @tuiPure
